@@ -1,8 +1,7 @@
-var CACHE_NAME = 'my-site-cache-v1';
+var CACHE_NAME = 'my-site-cache-v2';
 var urlsToCache = [
-    '/',
     '/main.css',
-    '/app.js',
+    '/scripts/app.js',
     '/manifest.json',
     '/images/Yahoo192.png',
     '/images/Yahoo512.png',
@@ -19,6 +18,7 @@ self.addEventListener('install', function(event) {
             })
     );
 });
+
 
 self.addEventListener('fetch', function(event) {
     event.respondWith(
