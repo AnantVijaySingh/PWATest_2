@@ -31,6 +31,7 @@ function counters() {
         localStorage.setItem('myData', JSON.stringify(array));
 
     } else {
+        console.log('First Visit');
         localStorage.setItem('visits', JSON.stringify(1));
         const date = new Date(Date.now());
         const obj = {
