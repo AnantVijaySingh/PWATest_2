@@ -22,7 +22,7 @@ function counters() {
         localStorage.setItem('visits', JSON.parse(localStorage.getItem('visits')) + 1);
         const date = new Date(Date.now());
         const obj = {
-            time: date.getDay() + '-' + date.getMonth() + '-' + date.getFullYear(),
+            time: date.toUTCString(),
             visits: localStorage.getItem('visits'),
             addToHomePrompt: false
         };
@@ -34,7 +34,7 @@ function counters() {
         localStorage.setItem('visits', JSON.stringify(1));
         const date = new Date(Date.now());
         const obj = {
-            time: date.getDay() + '-' + date.getMonth() + '-' + date.getFullYear(),
+            time: date.toUTCString(),
             visits: localStorage.getItem('visits'),
             addToHomePrompt: false
         };
@@ -50,35 +50,38 @@ counters();
 
 let deferredPrompt;
 
-// window.addEventListener('beforeinstallprompt', (e) => {
-//     // Prevent Chrome 67 and earlier from automatically showing the prompt
-//     e.preventDefault();
-//     // Stash the event so it can be triggered later.
-//     deferredPrompt = e;
-// });
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+});
 
 
 window.addEventListener('appinstalled', (evt) => {
     alert('Custom alert: app intstalled');
 });
 
-
+var intervalID = window.setInterval(()=> {
+    if (!!deferredPrompt) {
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice
+            .then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                } else {
+                    console.log('User dismissed the A2HS prompt');
+                }
+                deferredPrompt = null;
+            });
+        clearInterval(intervalID);
+        logAddToHomescreenEvent();
+    }
+},3000);
 
 function logAddToHomescreenEvent() {
-    console.log('function triggering incorrectly');
-    deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice
-        .then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the A2HS prompt');
-            } else {
-                console.log('User dismissed the A2HS prompt');
-            }
-            deferredPrompt = null;
-        });
-
-
+    console.log('function triggering correctly');
     var array = JSON.parse(localStorage.getItem('myData'));
     array[array.length - 1].addToHomePrompt = true;
     localStorage.setItem('myData', JSON.stringify(array));
