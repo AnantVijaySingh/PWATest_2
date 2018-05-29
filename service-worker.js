@@ -1,6 +1,8 @@
-const CACHE_NAME = 'my-site-cache-v1';
+const CACHE_NAME = 'my-site-cache-v2';
 const urlsToCache = [
-    '/main.css',
+    '/',
+    'index.html',
+    '/main_v2.css',
     '/scripts/app.js',
     '/manifest.json',
     '/images/Yahoo192.png',
