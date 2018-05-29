@@ -10,11 +10,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-
-var app = {
-    data: []
-};
-
 // Counters
 
 function counters() {

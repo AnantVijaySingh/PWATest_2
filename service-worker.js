@@ -1,26 +1,25 @@
-const CACHE_NAME = 'my-site-cache-v2';
+const CACHE_NAME = 'pwa-test-app-v3';
 const urlsToCache = [
     '/',
-    'index.html',
-    '/main_v2.css',
+    '/index.html',
+    '/main.css',
     '/scripts/app.js',
     '/manifest.json',
     '/images/Yahoo192.png',
     '/images/Yahoo512.png',
-    '/service-worker.js',
 ];
 
 self.addEventListener('install', function(event) {
     // Perform install steps
+    console.log('[ServiceWorker] Install');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.log('Opened cache');
+                console.log('[ServiceWorker] Caching app shell');
                 return cache.addAll(urlsToCache);
             })
     );
 });
-
 
 self.addEventListener('activate', function(e) {
     console.log('[ServiceWorker] Activate');
@@ -51,4 +50,3 @@ self.addEventListener('fetch', function(event) {
             )
     );
 });
-
